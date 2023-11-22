@@ -6,7 +6,7 @@ const game = (function () {
 
     const handleBoard = (function () {
         let board = [
-            ['','',''],
+            ['x','x','x'],
             ['','',''],
             ['','',''],
         ];
@@ -19,7 +19,7 @@ const game = (function () {
         let name = prompt('enter first players name..');
 
         if (name === null){
-            name = 'player1';
+            name = 'player 1';
         };
 
         return {name};
@@ -37,17 +37,17 @@ const game = (function () {
     })();
 
 
-    function checkWin() {
+    const checkWin = (function (board) {
         let x = 0;
         let o = 0;
 
         //CHECKING HORIZONTAL WINS
-        for (let i = 0; i < handleBoard.board.length; i++){
-            for (let a = 0; a < handleBoard.board[i].length; a++) {
-                if (handleBoard.board[i][a] === 'x'){
+        for (let i = 0; i < board.length; i++){
+            for (let a = 0; a < board[i].length; a++) {
+                if (board[i][a] === 'x'){
                     x++;
                     o = 0;
-                } else if (handleBoard.board[i][a] === 'o'){
+                } else if (board[i][a] === 'o'){
                     o++;
                     x = 0;
                 } else {
@@ -72,10 +72,10 @@ const game = (function () {
         let col3 = [];
 
 
-        for (let i = 0; i < handleBoard.board.length; i++){//creating verticalArrays
-            col1.push(handleBoard.board[i][0]);
-            col2.push(handleBoard.board[i][1]);
-            col3.push(handleBoard.board[i][2]);
+        for (let i = 0; i < board.length; i++){//creating verticalArrays
+            col1.push(board[i][0]);
+            col2.push(board[i][1]);
+            col3.push(board[i][2]);
         };
         let verticalArrays = [col1, col2, col3];
 
@@ -106,14 +106,14 @@ const game = (function () {
 
         //CHECKING DIAGONAL WINS
         let diag1 = [
-            handleBoard.board[0][0],
-            handleBoard.board[1][1],
-            handleBoard.board[2][2]
+            board[0][0],
+            board[1][1],
+            board[2][2]
         ];
         let diag2 = [
-            handleBoard.board[0][2],
-            handleBoard.board[1][1],
-            handleBoard.board[2][0]
+            board[0][2],
+            board[1][1],
+            board[2][0]
         ];
         let diagonalArrays = [diag1, diag2];
 
@@ -141,7 +141,17 @@ const game = (function () {
                 o = 0;
             };
         };
-    };
+    })(handleBoard.board);
+
+
+    const handleTurns = (function (name1, name2, checkWin) {
+        console.log(`Player 1: ${name1}\nPlayer 2: ${name2}`);
+
+        console.log(checkWin);
+    })(firstPlayer.name, secondPlayer.name, checkWin);
+
+
+
 
     return { handleBoard, firstPlayer, secondPlayer, checkWin };
 })();
@@ -152,8 +162,8 @@ const game = (function () {
 // console.log(game.firstPlayer);
 // console.log(game.secondPlayer);
 
-console.log(game.checkWin());
+// console.log(game.checkWin);
 
-if (game.checkWin() === 'x wins!'){
-    console.log('test');
-};
+// if (game.checkWin === 'x wins!'){
+//     console.log('test');
+// };
