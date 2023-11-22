@@ -6,9 +6,9 @@ const game = (function () {
 
     const handleBoard = (function () {
         let board = [
-            ['x','x','x'],
-            ['o','o','o'],
-            ['x','x','x'],
+            ['','',''],
+            ['','',''],
+            ['','',''],
         ];
 
         return {board};
@@ -16,14 +16,22 @@ const game = (function () {
 
 
     const firstPlayer = (function () {
-        let name = 'player1';
+        let name = prompt('enter first players name..');
+
+        if (name === null){
+            name = 'player1';
+        };
 
         return {name};
     })();
 
 
     const secondPlayer = (function () {
-        let name = 'player2';
+        let name = prompt('enter second players name..');
+
+        if (name === null){
+            name = 'player 2';
+        };
 
         return {name};
     })();
