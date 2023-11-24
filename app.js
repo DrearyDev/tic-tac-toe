@@ -11,32 +11,14 @@ const handleBoard = (function () {
     return {board};
 })();
 
+function createPlayer(name, symbol){
+    return { name, symbol }
+};
 
-const firstPlayer = (function () {
-    let name = prompt('enter first players name..');
-
-    if (name === null){
-        name = 'player 1';
-    };
-
-    return {name};
-})();
-
-
-const secondPlayer = (function () {
-    let name = prompt('enter second players name..');
-
-    if (name === null){
-        name = 'player 2';
-    };
-
-    return {name};
-})();
-
-
-const checkWin = (function (board) {
+const checkWin = (player) => {
     let x = 0;
     let o = 0;
+    let board = handleBoard.board;
 
     //CHECKING HORIZONTAL WINS
     for (let i = 0; i < board.length; i++){
@@ -53,10 +35,8 @@ const checkWin = (function (board) {
             };
         };
 
-        if (x === 3){
-            return 'x wins!';
-        } else if (o === 3){
-            return 'o wins!';
+        if (x === 3 || o === 3){
+            return `${player} wins!`;
         } else {
             x = 0;
             o = 0;
@@ -67,7 +47,6 @@ const checkWin = (function (board) {
     let col1 = [];
     let col2 = [];
     let col3 = [];
-
 
     for (let i = 0; i < board.length; i++){//creating verticalArrays
         col1.push(board[i][0]);
@@ -90,10 +69,8 @@ const checkWin = (function (board) {
             };
         };
 
-        if (x === 3){
-            return 'x wins!';
-        } else if (o === 3) {
-            return 'o wins!';
+        if (x === 3 || o === 3){
+            return `${player} wins!`;
         } else {
             x = 0;
             o = 0;
@@ -114,7 +91,6 @@ const checkWin = (function (board) {
     ];
     let diagonalArrays = [diag1, diag2];
 
-
     for (let i = 0; i < diagonalArrays.length; i++) {
         for (let a = 0; a < diagonalArrays[i].length; a++) {
             if (diagonalArrays[i][a] === 'x'){
@@ -129,54 +105,70 @@ const checkWin = (function (board) {
             };
         };
 
-        if (x === 3) {
-            return 'x wins!';
-        } else if (o === 3) {
-            return 'o wins!';
+        if (x === 3 || o === 3) {
+            return `${player} wins!`;
         } else {
             x = 0;
             o = 0;
         };
     };
 
-    return 'no winners yet!';
-})(handleBoard.board);
+    return 'no winners!';
+};
 
 
-function updateBoard(row, col) {
-    let board = handleBoard.board;
+const updateBoard = function(row, col, symbol) {
+    if (handleBoard.board[row][col] !== ''){
+        return 'spot not empty!';
+    };
 
-    console.log(row, col);
-    console.log(board[row][col]);
+    handleBoard.board[row][col] = symbol;
 };
 
 
 function resetGame() {
-    firstPlayer.name = 'player 1';
-    secondPlayer.name = 'player 2';
     handleBoard.board = [
         ['','',''],
         ['','',''],
         ['','','']
     ];
 
-    console.log(firstPlayer.name, secondPlayer.name, handleBoard.board);
+    gameController();
 };
 
-
-(function handleTurns() {
-    let name1 = firstPlayer.name;
-    let name2 = secondPlayer.name;
-    let board = handleBoard.board;
-
+function gameController() {
+    const firstPlayer = createPlayer('player1', 'x');
+    const secondPlayer = createPlayer('player2', 'o');
     let row, col;
+    let activePlayer = secondPlayer;
 
-    console.log(board);
-    console.log(`${name1}'s Turn!`);
+    const switchPlayerTurn = () => {
+        activePlayer = activePlayer === firstPlayer ? secondPlayer : firstPlayer;
+    };
 
+    const printNewRound = () => {
+        console.log(handleBoard.board);
+        console.log(`${activePlayer.name}'s Turn!`);
+        row = prompt(`enter row index to place ${activePlayer.symbol}`);
+        col = prompt(`enter column index to place ${activePlayer.symbol}`);
 
+        if (updateBoard(row, col, activePlayer.symbol) === 'spot not empty!'){
+            console.log('spot is not empty.. try again..');
+            printNewRound();
+        };
+    };
 
-})();
+    while (checkWin(activePlayer.name) === 'no winners!'){
+        switchPlayerTurn();
+        printNewRound();
+    };
+
+    console.log(checkWin(activePlayer.name));
+    resetGame();
+
+};
+
+gameController();
 
 
 
