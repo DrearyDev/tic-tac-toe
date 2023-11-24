@@ -82,7 +82,6 @@ function gameController() {
             };
         };
 
-
         //CHECKING DIAGONAL WINS
         let diag1 = [
             board[0][0],
