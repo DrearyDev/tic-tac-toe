@@ -7,11 +7,22 @@ function gameController() {
     let activePlayer = secondPlayer;
 
     const handleBoard = (function () {
-        let board = [
-            ['','',''],
-            ['','',''],
-            ['','',''],
-        ];
+        let board = [];
+        const container = document.querySelector('.container');
+
+        for (let i = 0; i < 9; i++){
+            console.log(i);
+            let div = document.createElement('div');
+            board[i] = { div };
+            container.appendChild(board[i].div);
+        };
+
+        // board.forEach(obj => {
+        //     obj.div.addEventListener('click', (e) => {
+        //         console.log('clicked');
+        //         console.log(e);
+        //     });
+        // });
 
         return {board};
     })();
