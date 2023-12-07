@@ -118,44 +118,53 @@ const game = () => {
     resetButton.addEventListener('click', resetGame);
 
     const checkWin = (symbol) => {
+        let horizontalArray = [];
         let verticalArray = [];
         let diagonalArray = [];
 
         let symbolCount = 0;
 
         //CHECKING HORIZONTALS
-        for (const ele of handleBoard.getBoardArray()) {
-            if (ele === symbol) {
-                symbolCount++;
-                console.log(symbolCount);
-                console.log(handleBoard.getBoardArray());
-                if (symbolCount === 3) {
-                    return true;
+        for (let i = 0; i < 3; i++) {
+            horizontalArray = [
+                handleBoard.getBoardArray()[i],
+                handleBoard.getBoardArray()[i + 1],
+                handleBoard.getBoardArray()[i + 2]
+            ];
+
+            for (const ele of handleBoard.getBoardArray()) {
+                if (ele === symbol) {
+                    symbolCount++;
+                    if (symbolCount === 3) {
+                        return true;
+                    };
+                } else {
+                    symbolCount = 0;
                 };
-            } else {
-                symbolCount = 0;
             };
         };
 
         //CHECKING VERTICALS
-        for (let i = 0; i < 3; i++) { //creating vertical array coloumns
-            verticalArray.push(handleBoard.getBoardArray()[i]);
-            verticalArray.push(handleBoard.getBoardArray()[i + 3]);
-            verticalArray.push(handleBoard.getBoardArray()[i + 6]);
-        };
+        for (let i = 0; i < 3; i++) {
+            verticalArray = [
+                handleBoard.getBoardArray()[i],
+                handleBoard.getBoardArray()[i + 3],
+                handleBoard.getBoardArray()[i + 6]
+            ];
 
-        symbolCount = 0;
-        for (const ele of verticalArray) {
-            if (ele === symbol) {
-                symbolCount++;
-                if (symbolCount === 3){
-                    return true;
+            symbolCount = 0;
+            for (const ele of verticalArray) {
+                if (ele === symbol) {
+                    symbolCount++;
+                    if (symbolCount === 3){
+                        return true;
+                    };
+                } else {
+                    symbolCount = 0;
                 };
-            } else {
-                symbolCount = 0;
             };
         };
-
+        
         //CHECKING DIAGONALS
         diagonalArray.push(handleBoard.getBoardArray()[0]);
         diagonalArray.push(handleBoard.getBoardArray()[4]);
