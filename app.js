@@ -72,6 +72,14 @@ const game = () => {
 
     handleBoard.createBoard();
 
+    const handleNameInput = (e) => {
+        if (e.target.textContent.length > 10) {//max lenght of names
+            e.target.textContent = e.target.textContent.slice(0, -1);
+        };
+    };
+    firstPlayerText.addEventListener('input', handleNameInput);
+    secondPlayerText.addEventListener('input', handleNameInput);
+
     const handleClicks = (e) => {
         //if board array is empty
         if (handleBoard.getBoardArray().join('') === '') {
@@ -119,6 +127,8 @@ const game = () => {
         for (const ele of handleBoard.getBoardArray()) {
             if (ele === symbol) {
                 symbolCount++;
+                console.log(symbolCount);
+                console.log(handleBoard.getBoardArray());
                 if (symbolCount === 3) {
                     return true;
                 };
