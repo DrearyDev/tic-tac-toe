@@ -132,7 +132,7 @@ const game = () => {
                 handleBoard.getBoardArray()[i + 1],
                 handleBoard.getBoardArray()[i + 2]
             ];
-            console.log(i);
+
             for (const ele of horizontalArray) {
                 if (ele === symbol) {
                     symbolCount++;
@@ -143,6 +143,8 @@ const game = () => {
                     symbolCount = 0;
                 };
             };
+
+            symbolCount = 0;
         };
 
         //CHECKING VERTICALS
@@ -164,6 +166,8 @@ const game = () => {
                     symbolCount = 0;
                 };
             };
+
+            symbolCount = 0;
         };
 
         //CHECKING DIAGONALS
@@ -184,6 +188,8 @@ const game = () => {
             } else {
                 symbolCount = 0;
             };
+
+            symbolCount = 0;
         };
 
         return false;
