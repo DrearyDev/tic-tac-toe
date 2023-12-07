@@ -57,23 +57,117 @@ const handleBoard = (() => {
     return { board, getBoardArray, resetBoardArray, createBoard, updateBoard, removeBoard, logBoard };
 })();
 
+const game = () => {
+    const gameStatus = document.querySelector('.game-status > p');
+    const resetButton = document.querySelector('.game-status > button');
 
+    const firstPlayerText = document.querySelector('.first-player');
+    const secondPlayerText = document.querySelector('.second-player');
+    firstPlayerText.setAttribute('contentEditable', true);
+    secondPlayerText.setAttribute('contentEditable', true);
 
-const checkWin = (player) => {
+    let firstPlayer = null;
+    let secondPlayer = null;
+    let activePlayer = null;
 
-};
+    handleBoard.createBoard();
 
-function resetGame() {
+    const handleClicks = (e) => {
+        //if board array is empty
+        if (handleBoard.getBoardArray().join('') === '') {
+            firstPlayerText.setAttribute('contentEditable', false);
+            secondPlayerText.setAttribute('contentEditable', false);
+            firstPlayer = createPlayer(firstPlayerText.textContent, 'x');
+            secondPlayer = createPlayer(secondPlayerText.textContent, 'o');
+            activePlayer = firstPlayer;
+        };
 
-};
+        if (e.target.innerText === '') {
+            handleBoard.updateBoard(e.target.attributes[0].value, activePlayer.symbol);
+            if (checkWin(activePlayer.symbol)) {
+                gameStatus.textContent = `${activePlayer.name} Wins!!!`;
+                handleBoard.board.removeEventListener('click', handleClicks);
+                resetButton.style.display = 'block';
+            } else {
+                switchActivePlayer();
+            };
+        };
+    };
+    handleBoard.board.addEventListener('click', handleClicks)
 
-const switchPlayerTurn = () => {
-    activePlayer = activePlayer === firstPlayer ? secondPlayer : firstPlayer;
-};
+    const switchActivePlayer = () => {
+        activePlayer = activePlayer === firstPlayer ? secondPlayer : firstPlayer;
+        gameStatus.textContent = `${activePlayer.name}'s Turn!`;
+    };
 
+    const resetGame = () => {
+        handleBoard.resetBoardArray();
+        handleBoard.removeBoard();
+        game();
+        gameStatus.textContent = "Change player Names and start when you're ready!"
+        resetButton.style.display = 'none';
+    };
+    resetButton.addEventListener('click', resetGame);
 
-function game(){
+    const checkWin = (symbol) => {
+        let verticalArray = [];
+        let diagonalArray = [];
 
+        let symbolCount = 0;
+
+        //CHECKING HORIZONTALS
+        for (const ele of handleBoard.getBoardArray()) {
+            if (ele === symbol) {
+                symbolCount++;
+                if (symbolCount === 3) {
+                    return true;
+                };
+            } else {
+                symbolCount = 0;
+            };
+        };
+
+        //CHECKING VERTICALS
+        for (let i = 0; i < 3; i++) { //creating vertical array coloumns
+            verticalArray.push(handleBoard.getBoardArray()[i]);
+            verticalArray.push(handleBoard.getBoardArray()[i + 3]);
+            verticalArray.push(handleBoard.getBoardArray()[i + 6]);
+        };
+
+        symbolCount = 0;
+        for (const ele of verticalArray) {
+            if (ele === symbol) {
+                symbolCount++;
+                if (symbolCount === 3){
+                    return true;
+                };
+            } else {
+                symbolCount = 0;
+            };
+        };
+
+        //CHECKING DIAGONALS
+        diagonalArray.push(handleBoard.getBoardArray()[0]);
+        diagonalArray.push(handleBoard.getBoardArray()[4]);
+        diagonalArray.push(handleBoard.getBoardArray()[8]);
+        diagonalArray.push(handleBoard.getBoardArray()[2]);
+        diagonalArray.push(handleBoard.getBoardArray()[4]);
+        diagonalArray.push(handleBoard.getBoardArray()[6]);
+
+        symbolCount = 0;
+        for (const ele of diagonalArray) {
+            if (ele === symbol) {
+                symbolCount++;
+                if (symbolCount === 3){
+                    return true;
+                };
+            } else {
+                symbolCount = 0;
+            };
+        };
+
+        return false;
+    };
 };
 game();
 
