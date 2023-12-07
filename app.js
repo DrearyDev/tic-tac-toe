@@ -125,14 +125,15 @@ const game = () => {
         let symbolCount = 0;
 
         //CHECKING HORIZONTALS
-        for (let i = 0; i < 3; i++) {
+
+        for (let i = 0; i < 9; i+=3) {
             horizontalArray = [
                 handleBoard.getBoardArray()[i],
                 handleBoard.getBoardArray()[i + 1],
                 handleBoard.getBoardArray()[i + 2]
             ];
-
-            for (const ele of handleBoard.getBoardArray()) {
+            console.log(i);
+            for (const ele of horizontalArray) {
                 if (ele === symbol) {
                     symbolCount++;
                     if (symbolCount === 3) {
@@ -164,7 +165,7 @@ const game = () => {
                 };
             };
         };
-        
+
         //CHECKING DIAGONALS
         diagonalArray.push(handleBoard.getBoardArray()[0]);
         diagonalArray.push(handleBoard.getBoardArray()[4]);
